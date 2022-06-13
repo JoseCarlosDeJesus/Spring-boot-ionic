@@ -30,6 +30,7 @@ import com.josecarlos.cursomc.repositories.ItemPedidoRepository;
 import com.josecarlos.cursomc.repositories.PagamentoRepository;
 import com.josecarlos.cursomc.repositories.PedidoRepository;
 import com.josecarlos.cursomc.repositories.ProdutoRepository;
+import com.josecarlos.cursomc.domain.enums.Perfil;
 
 @Service
 public class DBService {
@@ -112,11 +113,16 @@ public class DBService {
 		
  		Cliente cli1 = new Cliente(null, "Maria Silva", "stralandvanlumen@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("88991921", "3536781882"));
+		Cliente cli2 = new Cliente(null, "Ana Costa", "josecarlosdjesusj@gmail.com", "31628382740", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("93883321", "34252625"));
+		cli2.addPerfil(Perfil.ADMIN);
 		
 		Endereco e1= new Endereco(null, "Rua Flores", "300", "apto 203", "Jardim", "38220834", cli1, c1);
 		Endereco e2= new Endereco(null, "Avenida Matos", "301", "apto 204", "Palmares", "78220834", cli1, c2);
-
+		Endereco e3 = new Endereco(null, "Avenida Floriano", "2106", null, "Centro", "281777012", cli2, c2);
+		
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+ 		cli2.getEnderecos().addAll(Arrays.asList(e3));
 		
 		SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
@@ -146,8 +152,8 @@ public class DBService {
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11));
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
