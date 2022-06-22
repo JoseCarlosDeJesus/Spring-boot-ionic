@@ -24,6 +24,10 @@ import com.josecarlos.cursomc.repositories.ClienteRepository;
 import com.josecarlos.cursomc.repositories.EnderecoRepository;
 import com.josecarlos.cursomc.services.exceptions.DataIntegrityException;
 import com.josecarlos.cursomc.services.exceptions.ObjectNotFoundException;
+import com.josecarlos.cursomc.security.UserSS;
+import com.josecarlos.cursomc.services.exceptions.AuthorizationException;
+import com.josecarlos.cursomc.domain.enums.Perfil;
+
 
 @Service
 public class ClienteService {
@@ -38,6 +42,12 @@ public class ClienteService {
 	private BCryptPasswordEncoder pe;
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
